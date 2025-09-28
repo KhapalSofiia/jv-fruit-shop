@@ -1,5 +1,7 @@
 package core.basesyntax.strategy;
 
+import core.basesyntax.db.Storage;
+
 public interface ActionTypeService {
-    public int getTheAction(int currentQuantity, int quantity);
+    public void applyTheQuantity(Storage storage, String product, int quantity);
 }

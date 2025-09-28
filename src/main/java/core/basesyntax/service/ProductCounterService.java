@@ -1,7 +1,6 @@
 package core.basesyntax.service;
-
+import core.basesyntax.db.Storage;
 import java.util.Map;
-
 public interface ProductCounterService {
-    public Map<String, Integer> countTheProducts(String[][] report);
+    public void countTheProducts(String[][] report, Storage storage);
 }

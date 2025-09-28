@@ -1,11 +1,9 @@
 package core.basesyntax.service.impl;
-
 import core.basesyntax.service.ReportDataParserService;
 import core.basesyntax.exeptions.IncorrectFormatOfDataException;
 import core.basesyntax.exeptions.ReportsListEmptyException;
 import core.basesyntax.exeptions.ReportsListNullException;
 import java.util.List;
-
 public class ReportDataParserServiceImpl implements ReportDataParserService {
     private static final int INDEX_OF_ACTION = 0;
     private static final int INDEX_OF_PRODUCT = 1;
@@ -22,20 +20,36 @@ public class ReportDataParserServiceImpl implements ReportDataParserService {
         }
         // 1st element - action, 2nd element - product, 3rd element - quantity
         String[][] arrayOfData = new String[report.size()][NUMBER_OF_ARRAY_COLUMN];
-        for (int i = 0; i < report.size(); i++) {
-            if (report.get(i) == null || report.get(i).isBlank()) {
-                throw new IncorrectFormatOfDataException("The line " + i
-                        + " has incorrect format" + report.get(i));
-            }
-            String[] elementsOfLineOfReport = report.get(i).split(COLUMN_SEPARATOR);
+        for (int i = 1; i < report.size(); i++) {
+            String line = report.get(i);
+            String[] elementsOfLineOfReport = line.split(COLUMN_SEPARATOR, -1);
             if (elementsOfLineOfReport.length != NUMBER_OF_ARRAY_COLUMN) {
-                throw new IncorrectFormatOfDataException("Line " + i + " has "
-                        + elementsOfLineOfReport.length + " column(s), expected "
-                        + NUMBER_OF_ARRAY_COLUMN + ": " + report.get(i));
+                throw new IncorrectFormatOfDataException(
+                        "Line " + (i + 1) + " has " + elementsOfLineOfReport.length +
+                                " column(s), expected " + NUMBER_OF_ARRAY_COLUMN + ": \""
+                                + line + "\""
+                );
             }
-            arrayOfData[i][INDEX_OF_ACTION] = elementsOfLineOfReport[INDEX_OF_ACTION];
-            arrayOfData[i][INDEX_OF_PRODUCT] = elementsOfLineOfReport[INDEX_OF_PRODUCT];
-            arrayOfData[i][INDEX_OF_QUANTITY] = elementsOfLineOfReport[INDEX_OF_QUANTITY];
+            String action  = elementsOfLineOfReport[INDEX_OF_ACTION].trim();
+            String product = elementsOfLineOfReport[INDEX_OF_PRODUCT].trim();
+            String quantityStr = elementsOfLineOfReport[INDEX_OF_QUANTITY].trim();
+            if (action.isEmpty() || product.isEmpty() || quantityStr.isEmpty()) {
+                throw new IncorrectFormatOfDataException(
+                        "Line " + (i + 1) + " has empty action/product/quantity: \"" + line + "\""
+                );
+            }
+            int quantity;
+            try {
+                quantity = Integer.parseInt(quantityStr);
+            } catch (NumberFormatException e) {
+                throw new IncorrectFormatOfDataException(
+                        "Line " + (i + 1) + ": quantity is not a valid integer: \""
+                                + quantityStr + "\"", e
+                );
+            }
+            arrayOfData[i][INDEX_OF_ACTION] = action;
+            arrayOfData[i][INDEX_OF_PRODUCT] = product;
+            arrayOfData[i][INDEX_OF_QUANTITY] = String.valueOf(quantity);
         }
         return arrayOfData;
     }

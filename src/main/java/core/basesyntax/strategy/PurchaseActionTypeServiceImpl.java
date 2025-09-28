@@ -1,22 +1,22 @@
 package core.basesyntax.strategy;
-
+import core.basesyntax.db.Storage;
 import core.basesyntax.exeptions.InvalidDataException;
-
 public class PurchaseActionTypeServiceImpl implements ActionTypeService {
     @Override
-    public int getTheAction(int currentQuantity, int quantity) {
-        if (currentQuantity < 0) {
-            throw new InvalidDataException("Current quantity can't be negative "
-                    + currentQuantity);
-        }
+    public void applyTheQuantity (Storage storage, String product, int quantity) {
         if (quantity < 0) {
             throw new InvalidDataException("Quantity can't be negative " + quantity);
         }
-        if (quantity > currentQuantity) {
-            throw new InvalidDataException("Purchase quantity (" + quantity
-                    + ") exceeds current stock (" + currentQuantity + ")"
-            );
+        if (storage.contains(product)) {
+            int currentQuantity = storage.get(product);
+            if (quantity > currentQuantity) {
+                throw new InvalidDataException("Purchase quantity (" + quantity
+                        + ") exceeds current stock (" + currentQuantity + ")"
+                );
+            }
+            storage.set(product, currentQuantity - quantity);
+        } else {
+            storage.set(product, quantity);
         }
-        return currentQuantity - quantity;
     }
 }

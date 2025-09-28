@@ -1,10 +1,10 @@
 package core.basesyntax.dao;
-
 import core.basesyntax.exeptions.FileWriteException;
 import core.basesyntax.exeptions.IncorrectFileNameException;
+import core.basesyntax.exeptions.IncorrectFormatOfReportException;
+import core.basesyntax.exeptions.ReportIsNullException;
 import java.io.FileWriter;
 import java.io.IOException;
-
 public class ReportExporterDaoImpl implements ReportExporterDao {
     private final String fileName;
 
@@ -17,11 +17,16 @@ public class ReportExporterDaoImpl implements ReportExporterDao {
 
     @Override
     public void writeTheReport(String report) {
+        if (report == null) {
+            throw new ReportIsNullException("Report can't be null.");
+        }
+        if (report.isBlank()) {
+            throw new IncorrectFormatOfReportException("Report is incorrect " + fileName);
+        }
         try (FileWriter fileWriter = new FileWriter(fileName)) {
             fileWriter.write(report);
         } catch (IOException e) {
-            throw new FileWriteException("Error writing report to " + fileName
-                    + ": " + e.getMessage());
+            throw new FileWriteException("Error writing report to " + fileName, e);
         }
     }
 }

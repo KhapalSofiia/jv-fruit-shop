@@ -1,17 +1,10 @@
 package core.basesyntax.service.impl;
-
-
+import core.basesyntax.db.Storage;
+import core.basesyntax.exeptions.*;
 import core.basesyntax.service.ProductCounterService;
 import core.basesyntax.strategy.ActionService;
 import core.basesyntax.strategy.ActionTypeService;
-import core.basesyntax.exeptions.ActionServiceIsNullException;
-import core.basesyntax.exeptions.IncorrectFormatOfDataException;
-import core.basesyntax.exeptions.QuantityLessThanNullException;
-import core.basesyntax.exeptions.ReportIsNullException;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
 public class ProductCounterServiceImpl implements ProductCounterService {
     private static final int INDEX_OF_ACTION = 0;
     private static final int INDEX_OF_PRODUCT_NAME = 1;
@@ -27,43 +20,59 @@ public class ProductCounterServiceImpl implements ProductCounterService {
     }
 
     @Override
-    public Map<String, Integer> countTheProducts(String[][] report) {
+    public void countTheProducts(String[][] report, Storage storage) {
         if (report == null) {
             throw new ReportIsNullException("Report can't be null");
         }
+        if (storage == null) {
+            throw new StorageIsNullException("Storage can't be null");
+        }
         if (report.length <= 1) {
-            return new HashMap<>();
+            return;
         }
-        Map<String, Integer> quantityOfEveryProduct = new HashMap<>();
         for (int i = 1; i < report.length; i++) {
-            if (report[i].length != NUMBER_OF_COLUMNS) {
-                throw new IncorrectFormatOfDataException("Expected number of column is "
-                        + NUMBER_OF_COLUMNS + " but was " + report.length);
+            String[] row = report[i];
+            int line = i + 1;
+            if (row == null || row.length != NUMBER_OF_COLUMNS) {
+                throw new IncorrectFormatOfDataException(
+                        "Line " + line + ": expected " + NUMBER_OF_COLUMNS +
+                                " columns, but was " + (row == null ? "null" : row.length)
+                );
             }
-            if (report[i][INDEX_OF_QUANTITY] == null
-                    || report[i][INDEX_OF_ACTION] == null
-                    || report[i][INDEX_OF_PRODUCT_NAME] == null) {
-                throw new IncorrectFormatOfDataException("The action, product name or quantity can't null.");
+            String actionCode = trimOrEmpty(row[INDEX_OF_ACTION]);
+            String product    = trimOrEmpty(row[INDEX_OF_PRODUCT_NAME]);
+            String qtyRaw     = trimOrEmpty(row[INDEX_OF_QUANTITY]);
+            if (actionCode.isEmpty() || product.isEmpty() || qtyRaw.isEmpty()) {
+                throw new IncorrectFormatOfDataException(
+                        "Line " + line + ": action/product/quantity must not be blank -> " +
+                                Arrays.toString(row)
+                );
             }
-            if (report[i][INDEX_OF_PRODUCT_NAME].isBlank()
-                    || report[i][INDEX_OF_QUANTITY].isBlank()
-                    || report[i][INDEX_OF_ACTION].isBlank()) {
-                throw new IncorrectFormatOfDataException("The action, product name or quantity can't empty "
-                        + Arrays.toString(report[i]));
-            }
-            int currentQuantity = 0;
-            if (quantityOfEveryProduct.containsKey(report[i][INDEX_OF_PRODUCT_NAME])) {
-                currentQuantity = quantityOfEveryProduct.get(report[i][INDEX_OF_PRODUCT_NAME]);;
-            }
+            int quantity = getQuantity(report, i);
             ActionTypeService action = actionService.getStrategy(report[i][INDEX_OF_ACTION]);
-            int newQuantity = action.getTheAction(currentQuantity,
-                    Integer.parseInt(report[i][INDEX_OF_QUANTITY]));
-            if (newQuantity < 0) {
-                throw new QuantityLessThanNullException("The quantity can't be negative: "
-                        + newQuantity);
-            }
-            quantityOfEveryProduct.put(report[i][INDEX_OF_PRODUCT_NAME], newQuantity);
+            action.applyTheQuantity(storage, report[i][INDEX_OF_PRODUCT_NAME], quantity);
         }
-        return quantityOfEveryProduct;
+    }
+
+    private String trimOrEmpty(String s) {
+        return s == null ? "" : s.trim();
+    }
+
+    private static int getQuantity(String[][] report, int i) {
+        int quantity;
+        try {
+            quantity = Integer.parseInt(report[i][INDEX_OF_QUANTITY]);
+        } catch (NumberFormatException e) {
+            throw new IncorrectFormatOfDataException(
+                    "Invalid quantity at line " + (i + 1) + ": '" + report[i][INDEX_OF_QUANTITY]
+                            + "' is not a valid integer", e
+            );
+        }
+        if (quantity < 0) {
+            throw new QuantityLessThanNullException(
+                    "Negative quantity at line " + (i + 1) + ": " + quantity
+            );
+        }
+        return quantity;
     }
 }

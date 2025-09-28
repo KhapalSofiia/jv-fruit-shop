@@ -1,23 +1,31 @@
 package core.basesyntax.strategy;
-
 import core.basesyntax.exeptions.StrategyIsNullException;
 import core.basesyntax.exeptions.StrategyMapIsNullException;
+import core.basesyntax.exeptions.UnknownOperationException;
 import java.util.Map;
-
 public class ActionService {
-    private final Map<String, ActionTypeService> strategies;
+    private final Map<Operation, ActionTypeService> strategies;
 
-    public ActionService(Map<String, ActionTypeService> strategies) {
+    public ActionService(Map<Operation, ActionTypeService> strategies) {
         if (strategies == null) {
             throw new StrategyMapIsNullException("Map of strategies is null");
         }
         this.strategies = Map.copyOf(strategies);
     }
 
-    public ActionTypeService getStrategy(String actionType) {
-        ActionTypeService strategy = strategies.get(actionType);
+    public ActionTypeService getStrategy(String actionCode) {
+        if (actionCode == null) {
+            throw new StrategyIsNullException("ActionCode is null");
+        }
+        Operation operation;
+        try {
+            operation = Operation.fromCode(actionCode);
+        } catch (IllegalArgumentException e) {
+            throw new UnknownOperationException("Unknown operation code: " + actionCode, e);
+        }
+        ActionTypeService strategy = strategies.get(operation);
         if (strategy == null) {
-            throw new StrategyIsNullException("Strategy " + actionType + " is null");
+            throw new StrategyIsNullException("No strategy found for operation: " + operation);
         }
         return strategy;
     }
