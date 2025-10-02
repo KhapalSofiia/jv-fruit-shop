@@ -1,6 +1,9 @@
 package core.basesyntax.service;
+
 import core.basesyntax.db.Storage;
-import java.util.Map;
+import core.basesyntax.model.FruitTransaction;
+import java.util.List;
+
 public interface ProductCounterService {
-    public void countTheProducts(String[][] report, Storage storage);
+    public void countTheProducts(List<FruitTransaction> fruitTransactions, Storage storage) ;
 }

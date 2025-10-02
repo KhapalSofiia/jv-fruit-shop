@@ -1,4 +1,5 @@
-package core.basesyntax.exeptions;
+package core.basesyntax.exceptions;
+
 public class IncorrectFormatOfDataException extends RuntimeException {
     public IncorrectFormatOfDataException(String message) {
         super(message);

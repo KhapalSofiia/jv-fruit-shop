@@ -1,6 +1,6 @@
 package core.basesyntax.strategy;
 
-import core.basesyntax.exeptions.InvalidDataException;
+import core.basesyntax.exceptions.InvalidDataException;
 
 public enum Operation {
     BALANCE("b"),
@@ -19,11 +19,19 @@ public enum Operation {
     }
 
     public static Operation fromCode(String code) {
+        if (code == null || code.isBlank()) {
+            throw new InvalidDataException("Code can't be null or empty" + code);
+        }
+        String cleanCode = trimOrEmpty(code);
         for (Operation op : Operation.values()) {
-            if (op.getCode().equals(code)) {
+            if (op.getCode().equals(cleanCode)) {
                 return op;
             }
         }
         throw new InvalidDataException("Invalid operation code: " + code);
+    }
+
+    private static String trimOrEmpty(String s) {
+        return s == null ? "" : s.trim();
     }
 }

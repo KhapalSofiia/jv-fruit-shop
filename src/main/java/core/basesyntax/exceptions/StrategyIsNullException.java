@@ -1,4 +1,5 @@
-package core.basesyntax.exeptions;
+package core.basesyntax.exceptions;
+
 public class StrategyIsNullException extends RuntimeException {
     public StrategyIsNullException(String message) {
         super(message);

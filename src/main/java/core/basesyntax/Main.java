@@ -1,9 +1,12 @@
 package core.basesyntax;
+
 import core.basesyntax.dao.ReportExporterDao;
 import core.basesyntax.dao.ReportExporterDaoImpl;
 import core.basesyntax.dao.ReportExtractorDao;
 import core.basesyntax.dao.ReportExtractorDaoImpl;
 import core.basesyntax.db.Storage;
+import core.basesyntax.exceptions.ReportIsNullException;
+import core.basesyntax.model.FruitTransaction;
 import core.basesyntax.service.ProductCounterService;
 import core.basesyntax.service.ReportCreator;
 import core.basesyntax.service.ReportDataParserService;
@@ -18,25 +21,31 @@ import static core.basesyntax.strategy.ActionConfig.createResolver;
  * Feel free to remove this class and create your own.
  */
 public class Main {
+    private static final String DATA_FILE = "report.csv";
+    private static final String REPORT_FILE = "src/main/resources/finalReport.csv";
     // HINT: In the `public static void main(String[] args)` it is better to create instances of your classes,
     // and call their methods, but do not write any business logic in the `main` method!
     public static void main(String[] args) {
         //Зчитування файлу
         Storage storage = new Storage();
-        String resourceName = "report.csv";
         ClassLoader classLoader = Main.class.getClassLoader();
-        File file = new File(classLoader.getResource(resourceName).getFile());
+        File file;
+        try {
+            file = new File(classLoader.getResource(DATA_FILE).getFile());
+        } catch (NullPointerException e) {
+            throw new ReportIsNullException("Resource " + DATA_FILE + " not found on classpath");
+        }
         ReportExtractorDao fileReader = new ReportExtractorDaoImpl(file.getPath());
         List<String> inputReport = fileReader.getReport();
         //Перетворення репорта у масив
         ReportDataParserService reportDataParserService = new ReportDataParserServiceImpl();
-        String[][] parsedReport = reportDataParserService.parseReportToArray(inputReport);
+        List<FruitTransaction> parsedReport = reportDataParserService.parseReportToList(inputReport);
         //Підрахунок продуктів
         ProductCounterService productCounterService = new ProductCounterServiceImpl(createResolver());
         productCounterService.countTheProducts(parsedReport, storage);
         //Створення та запис репорту
         ReportExporterDao reportExporterDao =
-                new ReportExporterDaoImpl("src/main/resources/newReport.csv");
+                new ReportExporterDaoImpl(REPORT_FILE);
         ReportCreator report = new ReportCreatorImpl();
         String reportWrite = report.getReport(storage);
         reportExporterDao.writeTheReport(reportWrite);

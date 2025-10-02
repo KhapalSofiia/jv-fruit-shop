@@ -1,8 +1,10 @@
 package core.basesyntax.strategy;
-import core.basesyntax.exeptions.StrategyIsNullException;
-import core.basesyntax.exeptions.StrategyMapIsNullException;
-import core.basesyntax.exeptions.UnknownOperationException;
+
+import core.basesyntax.exceptions.StrategyIsNullException;
+import core.basesyntax.exceptions.StrategyMapIsNullException;
+import core.basesyntax.exceptions.UnknownOperationException;
 import java.util.Map;
+
 public class ActionService {
     private final Map<Operation, ActionTypeService> strategies;
 
@@ -20,7 +22,7 @@ public class ActionService {
         Operation operation;
         try {
             operation = Operation.fromCode(actionCode);
-        } catch (IllegalArgumentException e) {
+        } catch (RuntimeException e) {
             throw new UnknownOperationException("Unknown operation code: " + actionCode, e);
         }
         ActionTypeService strategy = strategies.get(operation);

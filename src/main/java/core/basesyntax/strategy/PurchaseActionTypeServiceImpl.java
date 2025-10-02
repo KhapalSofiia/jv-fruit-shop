@@ -1,6 +1,9 @@
 package core.basesyntax.strategy;
+
 import core.basesyntax.db.Storage;
-import core.basesyntax.exeptions.InvalidDataException;
+import core.basesyntax.exceptions.InvalidDataException;
+import core.basesyntax.exceptions.QuantityLessThanNullException;
+
 public class PurchaseActionTypeServiceImpl implements ActionTypeService {
     @Override
     public void applyTheQuantity (Storage storage, String product, int quantity) {
@@ -14,9 +17,12 @@ public class PurchaseActionTypeServiceImpl implements ActionTypeService {
                         + ") exceeds current stock (" + currentQuantity + ")"
                 );
             }
+            if (currentQuantity - quantity < 0) {
+                throw new QuantityLessThanNullException("New cuantity can't be negative: " + (currentQuantity - quantity));
+            }
             storage.set(product, currentQuantity - quantity);
         } else {
-            storage.set(product, quantity);
+            throw new InvalidDataException("Cannot purchase product '" + product + "' because it's not in stock");
         }
     }
 }

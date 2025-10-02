@@ -1,10 +1,12 @@
 package core.basesyntax.dao;
-import core.basesyntax.exeptions.FileWriteException;
-import core.basesyntax.exeptions.IncorrectFileNameException;
-import core.basesyntax.exeptions.IncorrectFormatOfReportException;
-import core.basesyntax.exeptions.ReportIsNullException;
+
+import core.basesyntax.exceptions.FileWriteException;
+import core.basesyntax.exceptions.IncorrectFileNameException;
+import core.basesyntax.exceptions.IncorrectFormatOfReportException;
+import core.basesyntax.exceptions.ReportIsNullException;
 import java.io.FileWriter;
 import java.io.IOException;
+
 public class ReportExporterDaoImpl implements ReportExporterDao {
     private final String fileName;
 

@@ -1,6 +1,8 @@
 package core.basesyntax.db;
+
 import java.util.HashMap;
 import java.util.Map;
+
 public class Storage {
     private final Map<String, Integer> storage;
 
@@ -8,8 +10,12 @@ public class Storage {
         storage = new HashMap<>();
     }
 
-    public int get(String key) {
-        return storage.get(key);
+    public Integer get(String key) {
+        try {
+            return storage.get(key);
+        } catch (NullPointerException e) {
+            return -1;
+        }
     }
 
     public void set(String key, int value) {

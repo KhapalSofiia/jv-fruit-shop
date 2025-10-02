@@ -1,14 +1,16 @@
 package core.basesyntax.dao;
-import core.basesyntax.exeptions.FileDoesnExistsException;
-import core.basesyntax.exeptions.FileReadException;
-import core.basesyntax.exeptions.IncorrectFileNameException;
-import core.basesyntax.exeptions.ReadNotPossibleException;
+
+import core.basesyntax.exceptions.FileDoesNotExistException;
+import core.basesyntax.exceptions.FileReadException;
+import core.basesyntax.exceptions.IncorrectFileNameException;
+import core.basesyntax.exceptions.ReadNotPossibleException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 public class ReportExtractorDaoImpl implements ReportExtractorDao {
     private final String fileName;
 
@@ -18,7 +20,7 @@ public class ReportExtractorDaoImpl implements ReportExtractorDao {
         }
         File file = new File(fileName);
         if (!file.exists()) {
-            throw new FileDoesnExistsException("File does not exist: " + fileName);
+            throw new FileDoesNotExistException("File does not exist: " + fileName);
         }
         if (!file.canRead()) {
             throw new ReadNotPossibleException("File is not readable: " + fileName);

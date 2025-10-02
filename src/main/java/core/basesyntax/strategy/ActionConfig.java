@@ -1,8 +1,9 @@
 package core.basesyntax.strategy;
+
 import java.util.HashMap;
 import java.util.Map;
-public class ActionConfig {
 
+public class ActionConfig {
     public static ActionService  createResolver() {
         Map<Operation, ActionTypeService> strategies = new HashMap<>();
         strategies.put(Operation.BALANCE, new BalanceActionTypeServiceImpl());

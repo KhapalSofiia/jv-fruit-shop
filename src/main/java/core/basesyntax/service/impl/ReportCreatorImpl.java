@@ -1,9 +1,11 @@
 package core.basesyntax.service.impl;
+
 import core.basesyntax.db.Storage;
 import core.basesyntax.service.ReportCreator;
-import core.basesyntax.exeptions.IncorrectFormatOfDataException;
-import core.basesyntax.exeptions.QuantityLessThanNullException;
+import core.basesyntax.exceptions.IncorrectFormatOfDataException;
+import core.basesyntax.exceptions.QuantityLessThanNullException;
 import java.util.Map;
+
 public class ReportCreatorImpl implements ReportCreator {
     private static final String NAME_OF_COLUMNS = "fruit,quantity";
     private static final String SYMBOL_OF_LINE_BREAK = System.lineSeparator();
@@ -20,10 +22,12 @@ public class ReportCreatorImpl implements ReportCreator {
                 throw new IncorrectFormatOfDataException("The product can't be null");
             }
             if (entry.getKey().isBlank()) {
-                throw new IncorrectFormatOfDataException("The product name can't be blank: " + entry.getKey());
+                throw new IncorrectFormatOfDataException("The product name can't be blank: "
+                        + entry.getKey());
             }
             if (entry.getValue() < 0) {
-                throw new QuantityLessThanNullException("The quantity can't be negative: " + entry.getValue());
+                throw new QuantityLessThanNullException("The quantity can't be negative: "
+                        + entry.getValue());
             }
             report.append(entry.getKey()).append(SYMBOL_OF_DATA_SEPARATION)
                     .append(entry.getValue())
