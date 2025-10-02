@@ -1,12 +1,12 @@
 package core.basesyntax.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
 import core.basesyntax.exceptions.IncorrectFormatOfDataException;
 import core.basesyntax.exceptions.ReportsListEmptyException;
 import core.basesyntax.exceptions.ReportsListNullException;
 import core.basesyntax.model.FruitTransaction;
 import core.basesyntax.service.ReportDataParserService;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReportDataParserServiceImpl implements ReportDataParserService {
     private static final int INDEX_OF_ACTION = 0;

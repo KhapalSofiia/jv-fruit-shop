@@ -5,7 +5,6 @@ import core.basesyntax.exceptions.FileReadException;
 import core.basesyntax.exceptions.IncorrectFileNameException;
 import core.basesyntax.exceptions.ReadNotPossibleException;
 import core.basesyntax.service.ReportExtractorDao;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
