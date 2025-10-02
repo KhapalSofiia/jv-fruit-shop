@@ -1,6 +1,5 @@
 package core.basesyntax;
 
-
 import core.basesyntax.db.Storage;
 import core.basesyntax.exceptions.ReportIsNullException;
 import core.basesyntax.model.FruitTransaction;
@@ -14,10 +13,9 @@ import core.basesyntax.service.impl.ReportCreatorImpl;
 import core.basesyntax.service.impl.ReportDataParserServiceImpl;
 import core.basesyntax.service.impl.ReportExporterDaoImpl;
 import core.basesyntax.service.impl.ReportExtractorDaoImpl;
+import core.basesyntax.strategy.ActionConfig;
 import java.io.File;
 import java.util.List;
-
-import static core.basesyntax.strategy.ActionConfig.createResolver;
 
 /**
  * Feel free to remove this class and create your own.
@@ -47,8 +45,9 @@ public class Main {
         List<FruitTransaction> parsedReport =
                 reportDataParserService.parseReportToList(inputReport);
         //Підрахунок продуктів
+        ActionConfig actionConfig = new ActionConfig();
         ProductCounterService productCounterService =
-                new ProductCounterServiceImpl(createResolver());
+                new ProductCounterServiceImpl(actionConfig.createResolver());
         productCounterService.countTheProducts(parsedReport, storage);
         //Створення та запис репорту
         ReportExporterDao reportExporterDao =
