@@ -4,9 +4,9 @@ import core.basesyntax.exceptions.InvalidDataException;
 import java.util.Objects;
 
 public class FruitTransaction {
-    String actionCode;
-    int quantity;
-    String productName;
+    private String actionCode;
+    private int quantity;
+    private String productName;
 
     public FruitTransaction(String actionCode, int quantity, String productName) {
         if (actionCode == null) {

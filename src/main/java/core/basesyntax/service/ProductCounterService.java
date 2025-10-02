@@ -5,5 +5,5 @@ import core.basesyntax.model.FruitTransaction;
 import java.util.List;
 
 public interface ProductCounterService {
-    public void countTheProducts(List<FruitTransaction> fruitTransactions, Storage storage) ;
+    void countTheProducts(List<FruitTransaction> fruitTransactions, Storage storage);
 }

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ActionConfig {
-    public static ActionService  createResolver() {
+    public static ActionService createResolver() {
         Map<Operation, ActionTypeService> strategies = new HashMap<>();
         strategies.put(Operation.BALANCE, new BalanceActionTypeServiceImpl());
         strategies.put(Operation.SUPPLY, new SupplyActionTypeServiceImpl());

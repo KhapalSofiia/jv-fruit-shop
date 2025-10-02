@@ -1,15 +1,16 @@
 package core.basesyntax.service.impl;
 
+import java.util.Map;
 import core.basesyntax.db.Storage;
-import core.basesyntax.service.ReportCreator;
 import core.basesyntax.exceptions.IncorrectFormatOfDataException;
 import core.basesyntax.exceptions.QuantityLessThanNullException;
-import java.util.Map;
+import core.basesyntax.service.ReportCreator;
 
 public class ReportCreatorImpl implements ReportCreator {
     private static final String NAME_OF_COLUMNS = "fruit,quantity";
     private static final String SYMBOL_OF_LINE_BREAK = System.lineSeparator();
     private static final String SYMBOL_OF_DATA_SEPARATION = ",";
+
     @Override
     public String getReport(Storage storage) {
         if (storage == null) {
@@ -17,7 +18,7 @@ public class ReportCreatorImpl implements ReportCreator {
         }
         StringBuilder report = new StringBuilder();
         report.append(NAME_OF_COLUMNS).append(SYMBOL_OF_LINE_BREAK);
-        for(Map.Entry<String, Integer> entry : storage.getStorage().entrySet()) {
+        for (Map.Entry<String, Integer> entry : storage.getStorage().entrySet()) {
             if (entry.getKey() == null || entry.getValue() == null) {
                 throw new IncorrectFormatOfDataException("The product can't be null");
             }

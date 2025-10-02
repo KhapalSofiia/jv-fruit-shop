@@ -5,7 +5,7 @@ import core.basesyntax.exceptions.InvalidDataException;
 
 public class ReturnActionTypeServiceImpl implements ActionTypeService {
     @Override
-    public void applyTheQuantity (Storage storage, String product, int quantity) {
+    public void applyTheQuantity(Storage storage, String product, int quantity) {
         if (storage == null) {
             throw new InvalidDataException("Storage can't be null");
         }

@@ -41,10 +41,10 @@ public class ProductCounterServiceImpl implements ProductCounterService {
                 throw new IncorrectFormatOfDataException("ActionCode"
                         + " and ProductName can't be null");
             }
-            if (actionCode.isEmpty() ||  productName.isEmpty()) {
+            if (actionCode.isEmpty() || productName.isEmpty()) {
                 throw new IncorrectFormatOfDataException(
-                        "Fruit transaction: action/product must not be blank -> " +
-                                fruitTransaction
+                        "Fruit transaction: action/product must not be blank -> "
+                                + fruitTransaction
                 );
             }
             if (quantity < 0) {

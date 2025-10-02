@@ -1,18 +1,18 @@
 package core.basesyntax.service.impl;
 
-import core.basesyntax.exceptions.IncorrectFormatOfDataException;
-import core.basesyntax.model.FruitTransaction;
-import core.basesyntax.service.ReportDataParserService;
-import core.basesyntax.exceptions.ReportsListEmptyException;
-import core.basesyntax.exceptions.ReportsListNullException;
 import java.util.ArrayList;
 import java.util.List;
+import core.basesyntax.exceptions.IncorrectFormatOfDataException;
+import core.basesyntax.exceptions.ReportsListEmptyException;
+import core.basesyntax.exceptions.ReportsListNullException;
+import core.basesyntax.model.FruitTransaction;
+import core.basesyntax.service.ReportDataParserService;
 
 public class ReportDataParserServiceImpl implements ReportDataParserService {
     private static final int INDEX_OF_ACTION = 0;
     private static final int INDEX_OF_PRODUCT = 1;
     private static final int INDEX_OF_QUANTITY = 2;
-    private static final String COLUMN_SEPARATOR= ",";
+    private static final String COLUMN_SEPARATOR = ",";
 
     public List<FruitTransaction> parseReportToList(List<String> report) {
         if (report == null) {
@@ -21,7 +21,7 @@ public class ReportDataParserServiceImpl implements ReportDataParserService {
         if (report.isEmpty()) {
             throw new ReportsListEmptyException("Report cannot be empty" + report);
         }
-       List<FruitTransaction> fruitTransactions = new ArrayList<>();
+        List<FruitTransaction> fruitTransactions = new ArrayList<>();
         for (int i = 1; i < report.size(); i++) {
             String line = report.get(i);
             String[] elementsOfLine = line.split(COLUMN_SEPARATOR);
@@ -30,7 +30,8 @@ public class ReportDataParserServiceImpl implements ReportDataParserService {
             String productName = trimOrEmpty(elementsOfLine[INDEX_OF_PRODUCT]);
             if (!actionCode.matches("^[bspr]$")) {
                 throw new IncorrectFormatOfDataException(
-                        "Line " + (i + 1) + ": invalid action code '" + actionCode + "'. Expected one of b/s/p/r"
+                        "Line " + (i + 1) + ": invalid action code '"
+                                + actionCode + "'. Expected one of b/s/p/r"
                 );
             }
             if (productName.isEmpty()) {

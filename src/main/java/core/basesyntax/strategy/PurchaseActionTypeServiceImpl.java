@@ -6,7 +6,7 @@ import core.basesyntax.exceptions.QuantityLessThanNullException;
 
 public class PurchaseActionTypeServiceImpl implements ActionTypeService {
     @Override
-    public void applyTheQuantity (Storage storage, String product, int quantity) {
+    public void applyTheQuantity(Storage storage, String product, int quantity) {
         if (quantity < 0) {
             throw new InvalidDataException("Quantity can't be negative " + quantity);
         }
@@ -18,11 +18,13 @@ public class PurchaseActionTypeServiceImpl implements ActionTypeService {
                 );
             }
             if (currentQuantity - quantity < 0) {
-                throw new QuantityLessThanNullException("New cuantity can't be negative: " + (currentQuantity - quantity));
+                throw new QuantityLessThanNullException("New quantity can't be negative: "
+                        + (currentQuantity - quantity));
             }
             storage.set(product, currentQuantity - quantity);
         } else {
-            throw new InvalidDataException("Cannot purchase product '" + product + "' because it's not in stock");
+            throw new InvalidDataException("Cannot purchase product '"
+                    + product + "' because it's not in stock");
         }
     }
 }

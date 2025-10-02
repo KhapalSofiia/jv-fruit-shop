@@ -1,9 +1,10 @@
-package core.basesyntax.dao;
+package core.basesyntax.service.impl;
 
 import core.basesyntax.exceptions.FileWriteException;
 import core.basesyntax.exceptions.IncorrectFileNameException;
 import core.basesyntax.exceptions.IncorrectFormatOfReportException;
 import core.basesyntax.exceptions.ReportIsNullException;
+import core.basesyntax.service.ReportExporterDao;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -18,7 +19,7 @@ public class ReportExporterDaoImpl implements ReportExporterDao {
     }
 
     @Override
-    public void writeTheReport(String report) {
+    public void writeReport(String report) {
         if (report == null) {
             throw new ReportIsNullException("Report can't be null.");
         }
