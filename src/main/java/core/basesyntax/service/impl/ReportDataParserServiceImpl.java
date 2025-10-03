@@ -9,9 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReportDataParserServiceImpl implements ReportDataParserService {
+    private static final int INDEX_OF_HEADER = 0;
+    private static final String HEADER = "type,fruit,quantity";
     private static final int INDEX_OF_ACTION = 0;
     private static final int INDEX_OF_PRODUCT = 1;
     private static final int INDEX_OF_QUANTITY = 2;
+    private static final int EXPECTED_LENGTH = 3;
     private static final String COLUMN_SEPARATOR = ",";
 
     public List<FruitTransaction> parseReportToList(List<String> report) {
@@ -19,12 +22,20 @@ public class ReportDataParserServiceImpl implements ReportDataParserService {
             throw new ReportsListNullException("Report cannot be null");
         }
         if (report.isEmpty()) {
-            throw new ReportsListEmptyException("Report cannot be empty" + report);
+            throw new ReportsListEmptyException("Report cannot be empty");
         }
         List<FruitTransaction> fruitTransactions = new ArrayList<>();
-        for (int i = 1; i < report.size(); i++) {
+        int StartIndex = 0;
+        if (report.get(INDEX_OF_HEADER).equals(HEADER)) {
+            StartIndex = 1;
+        }
+        for (int i = StartIndex; i < report.size(); i++) {
             String line = report.get(i);
             String[] elementsOfLine = line.split(COLUMN_SEPARATOR);
+            if (elementsOfLine.length != EXPECTED_LENGTH) {
+                throw new IncorrectFormatOfDataException("Line " + (i+1) + ": expected "
+                        + EXPECTED_LENGTH + " fields but was " + elementsOfLine.length);
+            }
             String actionCode = trimOrEmpty(elementsOfLine[INDEX_OF_ACTION]);
             int quantity = getQuantity(elementsOfLine[INDEX_OF_QUANTITY], i);
             String productName = trimOrEmpty(elementsOfLine[INDEX_OF_PRODUCT]);

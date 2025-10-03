@@ -22,7 +22,8 @@ public class FruitTransaction {
             throw new InvalidDataException("Product name is blank");
         }
         if (quantity < 0) {
-            throw new InvalidDataException("Quantity must not be negative: " + quantity);
+            throw new InvalidDataException("Quantity must not be negative: "
+                    + quantity);
         }
         this.actionCode = actionCode;
         this.quantity = quantity;
@@ -34,6 +35,12 @@ public class FruitTransaction {
     }
 
     public void setActionCode(String actionCode) {
+        if (actionCode == null) {
+            throw new InvalidDataException("Action code can't be null");
+        }
+        if (actionCode.isBlank()) {
+            throw new InvalidDataException("Action code can't be blank");
+        }
         this.actionCode = actionCode;
     }
 
@@ -42,6 +49,10 @@ public class FruitTransaction {
     }
 
     public void setQuantity(int quantity) {
+        if (quantity < 0) {
+            throw new InvalidDataException("Quantity must not be negative: "
+                    + quantity);
+        }
         this.quantity = quantity;
     }
 
@@ -50,6 +61,12 @@ public class FruitTransaction {
     }
 
     public void setProductName(String productName) {
+        if (productName == null) {
+            throw new InvalidDataException("Product name can't be null");
+        }
+        if (productName.isBlank()) {
+            throw new InvalidDataException("Product name can't be blank");
+        }
         this.productName = productName;
     }
 

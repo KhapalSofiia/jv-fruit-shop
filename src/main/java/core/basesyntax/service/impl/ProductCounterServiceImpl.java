@@ -34,6 +34,10 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             return;
         }
         for (FruitTransaction fruitTransaction : fruitTransactions) {
+            if (fruitTransaction == null) {
+                throw new ReportIsNullException("Fruit transactions"
+                        + "can't be null");
+            }
             String productName = fruitTransaction.getProductName();
             int quantity = fruitTransaction.getQuantity();
             String actionCode = fruitTransaction.getActionCode();
