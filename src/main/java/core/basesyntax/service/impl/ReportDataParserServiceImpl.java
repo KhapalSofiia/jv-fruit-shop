@@ -25,15 +25,15 @@ public class ReportDataParserServiceImpl implements ReportDataParserService {
             throw new ReportsListEmptyException("Report cannot be empty");
         }
         List<FruitTransaction> fruitTransactions = new ArrayList<>();
-        int StartIndex = 0;
+        int startIndex = 0;
         if (report.get(INDEX_OF_HEADER).equals(HEADER)) {
-            StartIndex = 1;
+            startIndex = 1;
         }
-        for (int i = StartIndex; i < report.size(); i++) {
+        for (int i = startIndex; i < report.size(); i++) {
             String line = report.get(i);
             String[] elementsOfLine = line.split(COLUMN_SEPARATOR);
             if (elementsOfLine.length != EXPECTED_LENGTH) {
-                throw new IncorrectFormatOfDataException("Line " + (i+1) + ": expected "
+                throw new IncorrectFormatOfDataException("Line " + (i + 1) + ": expected "
                         + EXPECTED_LENGTH + " fields but was " + elementsOfLine.length);
             }
             String actionCode = trimOrEmpty(elementsOfLine[INDEX_OF_ACTION]);
