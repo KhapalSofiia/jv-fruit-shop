@@ -1,6 +1,6 @@
 package core.basesyntax.service.impl;
 
-import core.basesyntax.exceptions.FileReadException;
+import core.basesyntax.exceptions.WorkWithFileException;
 import core.basesyntax.service.ReportExtractorDao;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,7 +25,7 @@ public class ReportExtractorDaoImpl implements ReportExtractorDao {
                 linesOfReport.add(lineOfReport);
             }
         } catch (IOException e) {
-            throw new FileReadException("Error reading report from stream", e);
+            throw new WorkWithFileException("Error reading report from stream", e);
         }
         return linesOfReport;
     }

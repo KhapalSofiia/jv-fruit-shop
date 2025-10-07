@@ -1,5 +1,6 @@
 package core.basesyntax.db;
 
+import core.basesyntax.exceptions.InvalidDataException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,27 +15,27 @@ public class Storage {
         try {
             return storage.get(key);
         } catch (NullPointerException e) {
-            throw new IllegalArgumentException("Storage key not found"
+            throw new InvalidDataException("Storage key not found"
                     + key, e);
         }
     }
 
     public void set(String key, int value) {
         if (key == null) {
-            throw new IllegalArgumentException("Storage key can't be null");
+            throw new InvalidDataException("Storage key can't be null");
         }
         if (key.isBlank()) {
-            throw new IllegalArgumentException("Storage key can't be blank");
+            throw new InvalidDataException("Storage key can't be blank");
         }
         storage.put(key, value);
     }
 
     public void put(String key, int value) {
         if (key == null) {
-            throw new IllegalArgumentException("Storage key can't be null");
+            throw new InvalidDataException("Storage key can't be null");
         }
         if (key.isBlank()) {
-            throw new IllegalArgumentException("Storage key can't be blank");
+            throw new InvalidDataException("Storage key can't be blank");
         }
         storage.put(key, value);
     }
@@ -49,10 +50,10 @@ public class Storage {
 
     public boolean contains(String key) {
         if (key == null) {
-            throw new IllegalArgumentException("Storage key can't be null");
+            throw new InvalidDataException("Storage key can't be null");
         }
         if (key.isBlank()) {
-            throw new IllegalArgumentException("Storage key can't be blank");
+            throw new InvalidDataException("Storage key can't be blank");
         }
         return storage.containsKey(key);
     }

@@ -1,7 +1,7 @@
 package core.basesyntax;
 
 import core.basesyntax.db.Storage;
-import core.basesyntax.exceptions.ReportIsNullException;
+import core.basesyntax.exceptions.DataIsNullException;
 import core.basesyntax.model.FruitTransaction;
 import core.basesyntax.service.ProductCounterService;
 import core.basesyntax.service.ReportCreator;
@@ -34,7 +34,7 @@ public class Main {
         ClassLoader classLoader = Main.class.getClassLoader();
         try (InputStream inputStream = classLoader.getResourceAsStream(DATA_FILE)) {
             if (inputStream == null) {
-                throw new ReportIsNullException("Resource '" + DATA_FILE
+                throw new DataIsNullException("Resource '" + DATA_FILE
                         + "' not found on the classpath");
             }
             ReportExtractorDao fileReader = new ReportExtractorDaoImpl();
@@ -56,7 +56,7 @@ public class Main {
             String reportWrite = report.getReport(storage);
             reportExporterDao.writeReport(reportWrite);
         } catch (IOException e) {
-            throw new ReportIsNullException("Impossible to read data from "
+            throw new DataIsNullException("Impossible to read data from "
                     + DATA_FILE, e);
         }
     }

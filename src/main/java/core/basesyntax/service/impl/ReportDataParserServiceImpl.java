@@ -1,8 +1,7 @@
 package core.basesyntax.service.impl;
 
-import core.basesyntax.exceptions.IncorrectFormatOfDataException;
-import core.basesyntax.exceptions.ReportsListEmptyException;
-import core.basesyntax.exceptions.ReportsListNullException;
+import core.basesyntax.exceptions.DataIsNullException;
+import core.basesyntax.exceptions.InvalidDataException;
 import core.basesyntax.model.FruitTransaction;
 import core.basesyntax.service.ReportDataParserService;
 import java.util.ArrayList;
@@ -19,10 +18,10 @@ public class ReportDataParserServiceImpl implements ReportDataParserService {
 
     public List<FruitTransaction> parseReportToList(List<String> report) {
         if (report == null) {
-            throw new ReportsListNullException("Report cannot be null");
+            throw new DataIsNullException("Report cannot be null");
         }
         if (report.isEmpty()) {
-            throw new ReportsListEmptyException("Report cannot be empty");
+            throw new InvalidDataException("Report cannot be empty");
         }
         List<FruitTransaction> fruitTransactions = new ArrayList<>();
         int startIndex = 0;
@@ -33,20 +32,20 @@ public class ReportDataParserServiceImpl implements ReportDataParserService {
             String line = report.get(i);
             String[] elementsOfLine = line.split(COLUMN_SEPARATOR);
             if (elementsOfLine.length != EXPECTED_LENGTH) {
-                throw new IncorrectFormatOfDataException("Line " + (i + 1) + ": expected "
+                throw new InvalidDataException("Line " + (i + 1) + ": expected "
                         + EXPECTED_LENGTH + " fields but was " + elementsOfLine.length);
             }
             String actionCode = trimOrEmpty(elementsOfLine[INDEX_OF_ACTION]);
             int quantity = getQuantity(elementsOfLine[INDEX_OF_QUANTITY], i);
             String productName = trimOrEmpty(elementsOfLine[INDEX_OF_PRODUCT]);
             if (!actionCode.matches("^[bspr]$")) {
-                throw new IncorrectFormatOfDataException(
+                throw new InvalidDataException(
                         "Line " + (i + 1) + ": invalid action code '"
                                 + actionCode + "'. Expected one of b/s/p/r"
                 );
             }
             if (productName.isEmpty()) {
-                throw new IncorrectFormatOfDataException(
+                throw new InvalidDataException(
                         "Line " + (i + 1) + ": product name must not be blank -> " + line
                 );
             }
@@ -60,11 +59,11 @@ public class ReportDataParserServiceImpl implements ReportDataParserService {
         try {
             quantity = Integer.parseInt(quantityString);
             if (quantity < 0) {
-                throw new IncorrectFormatOfDataException("Line " + (i + 1)
+                throw new InvalidDataException("Line " + (i + 1)
                         + ": negative quantity: " + quantity);
             }
         } catch (NumberFormatException e) {
-            throw new IncorrectFormatOfDataException(
+            throw new InvalidDataException(
                     "Invalid quantity at line " + (i + 1) + ": '"
                             + quantityString + "' is not a valid integer", e
             );

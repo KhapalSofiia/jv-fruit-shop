@@ -1,8 +1,8 @@
 package core.basesyntax.service.impl;
 
 import core.basesyntax.db.Storage;
-import core.basesyntax.exceptions.IncorrectFormatOfDataException;
-import core.basesyntax.exceptions.QuantityLessThanNullException;
+import core.basesyntax.exceptions.DataIsNullException;
+import core.basesyntax.exceptions.InvalidDataException;
 import core.basesyntax.service.ReportCreator;
 import java.util.Map;
 
@@ -14,20 +14,20 @@ public class ReportCreatorImpl implements ReportCreator {
     @Override
     public String getReport(Storage storage) {
         if (storage == null) {
-            throw new IncorrectFormatOfDataException("Storage can't be null");
+            throw new DataIsNullException("Storage can't be null");
         }
         StringBuilder report = new StringBuilder();
         report.append(NAME_OF_COLUMNS).append(SYMBOL_OF_LINE_BREAK);
         for (Map.Entry<String, Integer> entry : storage.getStorage().entrySet()) {
             if (entry.getKey() == null || entry.getValue() == null) {
-                throw new IncorrectFormatOfDataException("The product can't be null");
+                throw new DataIsNullException("The product can't be null");
             }
             if (entry.getKey().isBlank()) {
-                throw new IncorrectFormatOfDataException("The product name can't be blank: "
+                throw new InvalidDataException("The product name can't be blank: "
                         + entry.getKey());
             }
             if (entry.getValue() < 0) {
-                throw new QuantityLessThanNullException("The quantity can't be negative: "
+                throw new InvalidDataException("The quantity can't be negative: "
                         + entry.getValue());
             }
             report.append(entry.getKey()).append(SYMBOL_OF_DATA_SEPARATION)
