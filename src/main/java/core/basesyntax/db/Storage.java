@@ -1,6 +1,5 @@
 package core.basesyntax.db;
 
-import core.basesyntax.exceptions.InvalidDataException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,31 +11,14 @@ public class Storage {
     }
 
     public Integer get(String key) {
-        try {
-            return storage.get(key);
-        } catch (NullPointerException e) {
-            throw new InvalidDataException("Storage key not found"
-                    + key, e);
-        }
+        return storage.get(key);
     }
 
     public void set(String key, int value) {
-        if (key == null) {
-            throw new InvalidDataException("Storage key can't be null");
-        }
-        if (key.isBlank()) {
-            throw new InvalidDataException("Storage key can't be blank");
-        }
         storage.put(key, value);
     }
 
     public void put(String key, int value) {
-        if (key == null) {
-            throw new InvalidDataException("Storage key can't be null");
-        }
-        if (key.isBlank()) {
-            throw new InvalidDataException("Storage key can't be blank");
-        }
         storage.put(key, value);
     }
 
@@ -49,12 +31,6 @@ public class Storage {
     }
 
     public boolean contains(String key) {
-        if (key == null) {
-            throw new InvalidDataException("Storage key can't be null");
-        }
-        if (key.isBlank()) {
-            throw new InvalidDataException("Storage key can't be blank");
-        }
         return storage.containsKey(key);
     }
 }

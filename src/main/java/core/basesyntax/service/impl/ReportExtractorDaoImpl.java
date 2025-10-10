@@ -13,9 +13,6 @@ public class ReportExtractorDaoImpl implements ReportExtractorDao {
 
     @Override
     public List<String> getReport(InputStream inputStream) {
-        if (inputStream == null) {
-            throw new IllegalArgumentException("Input steam can't be null.");
-        }
         List<String> linesOfReport = new ArrayList<>();
         BufferedReader br = new BufferedReader(
                 new InputStreamReader(inputStream, java.nio.charset.StandardCharsets.UTF_8));

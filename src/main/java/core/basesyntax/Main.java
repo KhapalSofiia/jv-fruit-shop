@@ -33,10 +33,6 @@ public class Main {
         Storage storage = new Storage();
         ClassLoader classLoader = Main.class.getClassLoader();
         try (InputStream inputStream = classLoader.getResourceAsStream(DATA_FILE)) {
-            if (inputStream == null) {
-                throw new DataIsNullException("Resource '" + DATA_FILE
-                        + "' not found on the classpath");
-            }
             ReportExtractorDao fileReader = new ReportExtractorDaoImpl();
             List<String> inputReport = fileReader.getReport(inputStream);
             // Перетворення репорта у масив

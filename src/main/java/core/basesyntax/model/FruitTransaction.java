@@ -1,6 +1,5 @@
 package core.basesyntax.model;
 
-import core.basesyntax.exceptions.DataIsNullException;
 import core.basesyntax.exceptions.InvalidDataException;
 import java.util.Objects;
 
@@ -20,12 +19,6 @@ public class FruitTransaction {
     }
 
     public void setActionCode(String actionCode) {
-        if (actionCode == null) {
-            throw new DataIsNullException("Action code can't be null");
-        }
-        if (actionCode.isBlank()) {
-            throw new InvalidDataException("Action code can't be blank");
-        }
         this.actionCode = actionCode;
     }
 
@@ -46,12 +39,6 @@ public class FruitTransaction {
     }
 
     public void setProductName(String productName) {
-        if (productName == null) {
-            throw new InvalidDataException("Product name can't be null");
-        }
-        if (productName.isBlank()) {
-            throw new InvalidDataException("Product name can't be blank");
-        }
         this.productName = productName;
     }
 

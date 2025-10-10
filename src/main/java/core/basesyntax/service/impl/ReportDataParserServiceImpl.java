@@ -1,6 +1,5 @@
 package core.basesyntax.service.impl;
 
-import core.basesyntax.exceptions.DataIsNullException;
 import core.basesyntax.exceptions.InvalidDataException;
 import core.basesyntax.model.FruitTransaction;
 import core.basesyntax.service.ReportDataParserService;
@@ -17,12 +16,6 @@ public class ReportDataParserServiceImpl implements ReportDataParserService {
     private static final String COLUMN_SEPARATOR = ",";
 
     public List<FruitTransaction> parseReportToList(List<String> report) {
-        if (report == null) {
-            throw new DataIsNullException("Report cannot be null");
-        }
-        if (report.isEmpty()) {
-            throw new InvalidDataException("Report cannot be empty");
-        }
         List<FruitTransaction> fruitTransactions = new ArrayList<>();
         int startIndex = 0;
         if (report.get(INDEX_OF_HEADER).equals(HEADER)) {
@@ -44,29 +37,16 @@ public class ReportDataParserServiceImpl implements ReportDataParserService {
                                 + actionCode + "'. Expected one of b/s/p/r"
                 );
             }
-            if (productName.isEmpty()) {
-                throw new InvalidDataException(
-                        "Line " + (i + 1) + ": product name must not be blank -> " + line
-                );
-            }
             fruitTransactions.add(new FruitTransaction(actionCode, quantity, productName));
         }
         return fruitTransactions;
     }
 
     private static int getQuantity(String quantityString, int i) {
-        int quantity;
-        try {
-            quantity = Integer.parseInt(quantityString);
-            if (quantity < 0) {
-                throw new InvalidDataException("Line " + (i + 1)
-                        + ": negative quantity: " + quantity);
-            }
-        } catch (NumberFormatException e) {
-            throw new InvalidDataException(
-                    "Invalid quantity at line " + (i + 1) + ": '"
-                            + quantityString + "' is not a valid integer", e
-            );
+        int quantity = Integer.parseInt(quantityString);
+        if (quantity < 0) {
+            throw new InvalidDataException("Line " + (i + 1)
+                    + ": negative quantity: " + quantity);
         }
         return quantity;
     }
