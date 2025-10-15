@@ -23,15 +23,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Feel free to remove this class and create your own.
- */
 public class Main {
     private static final String REPORT_FILE = "src/main/resources/finalReport.csv";
 
-
     public static void main(String[] args) {
-        Storage storage = new Storage();
         ClassLoader classLoader = Main.class.getClassLoader();
         InputStream inputStream = classLoader.getResourceAsStream("report.csv");
         ReportExtractorDao fileReader = new ReportExtractorDaoImpl();
@@ -39,8 +34,6 @@ public class Main {
 
         ReportDataParserService reportDataParserService =
                 new ReportDataParserServiceImpl();
-        List<FruitTransaction> parsedReport =
-                reportDataParserService.parseReportToList(inputReport);
 
         Map<Operation, ActionTypeService> operationHandlers = new HashMap<>();
         operationHandlers.put(Operation.BALANCE, new BalanceActionTypeServiceImpl());
@@ -50,6 +43,9 @@ public class Main {
 
         ProductCounterService productCounterService =
                 new ProductCounterServiceImpl(operationHandlers);
+        Storage storage = new Storage();
+        List<FruitTransaction> parsedReport =
+                reportDataParserService.parseReportToList(inputReport);
         productCounterService.countTheProducts(parsedReport, storage);
 
         ReportExporterDao reportExporterDao =

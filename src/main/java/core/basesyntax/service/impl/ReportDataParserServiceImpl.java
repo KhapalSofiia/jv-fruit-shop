@@ -4,7 +4,6 @@ import core.basesyntax.exceptions.InvalidDataException;
 import core.basesyntax.model.FruitTransaction;
 import core.basesyntax.service.ReportDataParserService;
 import core.basesyntax.strategy.Operation;
-
 import java.util.ArrayList;
 import java.util.List;
 

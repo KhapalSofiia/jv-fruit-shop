@@ -15,7 +15,7 @@ public class ReportExtractorDaoImpl implements ReportExtractorDao {
     public List<String> getReport(InputStream inputStream) {
         List<String> linesOfReport = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(
-                new InputStreamReader(inputStream, java.nio.charset.StandardCharsets.UTF_8))){
+                new InputStreamReader(inputStream, java.nio.charset.StandardCharsets.UTF_8))) {
             String lineOfReport;
             while ((lineOfReport = br.readLine()) != null) {
                 linesOfReport.add(lineOfReport);
