@@ -9,11 +9,11 @@ public class PurchaseActionTypeServiceImpl implements ActionTypeService {
         if (quantity < 0) {
             throw new InvalidDataException("Quantity can't be negative " + quantity);
         }
-        Integer currentValue = storage.get(product);
+        Integer currentValue = storage.getStorage().get(product);
         if (currentValue - quantity < 0) {
             throw new InvalidDataException("New quantity can't be negative: "
                     + (currentValue - quantity) + " for product: " + product);
         }
-        storage.set(product, currentValue - quantity);
+        storage.getStorage().put(product, currentValue - quantity);
     }
 }

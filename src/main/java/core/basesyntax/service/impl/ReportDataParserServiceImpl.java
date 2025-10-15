@@ -3,6 +3,8 @@ package core.basesyntax.service.impl;
 import core.basesyntax.exceptions.InvalidDataException;
 import core.basesyntax.model.FruitTransaction;
 import core.basesyntax.service.ReportDataParserService;
+import core.basesyntax.strategy.Operation;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,16 +30,11 @@ public class ReportDataParserServiceImpl implements ReportDataParserService {
                 throw new InvalidDataException("Line " + (i + 1) + ": expected "
                         + EXPECTED_LENGTH + " fields but was " + elementsOfLine.length);
             }
-            String actionCode = trimOrEmpty(elementsOfLine[INDEX_OF_ACTION]);
+            Operation operation = Operation.fromCode(elementsOfLine[INDEX_OF_ACTION]);
             int quantity = getQuantity(elementsOfLine[INDEX_OF_QUANTITY], i);
-            String productName = trimOrEmpty(elementsOfLine[INDEX_OF_PRODUCT]);
-            if (!actionCode.matches("^[bspr]$")) {
-                throw new InvalidDataException(
-                        "Line " + (i + 1) + ": invalid action code '"
-                                + actionCode + "'. Expected one of b/s/p/r"
-                );
-            }
-            fruitTransactions.add(new FruitTransaction(actionCode, quantity, productName));
+            String productName = safeOrEmpty(elementsOfLine[INDEX_OF_PRODUCT]);
+
+            fruitTransactions.add(new FruitTransaction(operation, quantity, productName));
         }
         return fruitTransactions;
     }
@@ -51,7 +48,7 @@ public class ReportDataParserServiceImpl implements ReportDataParserService {
         return quantity;
     }
 
-    private String trimOrEmpty(String s) {
-        return s == null ? "" : s.trim();
+    private String safeOrEmpty(String s) {
+        return s == null ? "" : s;
     }
 }

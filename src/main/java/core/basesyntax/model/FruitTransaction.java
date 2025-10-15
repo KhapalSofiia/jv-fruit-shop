@@ -1,25 +1,25 @@
 package core.basesyntax.model;
 
 import core.basesyntax.exceptions.InvalidDataException;
-import java.util.Objects;
+import core.basesyntax.strategy.Operation;
 
 public class FruitTransaction {
-    private String actionCode;
+    private Operation code;
     private int quantity;
     private String productName;
 
-    public FruitTransaction(String actionCode, int quantity, String productName) {
-        this.actionCode = actionCode;
+    public FruitTransaction(Operation code, int quantity, String productName) {
+        this.code = code;
         this.quantity = quantity;
         this.productName = productName;
     }
 
-    public String getActionCode() {
-        return actionCode;
+    public Operation getActionCode() {
+        return code;
     }
 
-    public void setActionCode(String actionCode) {
-        this.actionCode = actionCode;
+    public void setCode(Operation actionCode) {
+        this.code = actionCode;
     }
 
     public int getQuantity() {
@@ -40,29 +40,5 @@ public class FruitTransaction {
 
     public void setProductName(String productName) {
         this.productName = productName;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        FruitTransaction that = (FruitTransaction) o;
-        return quantity == that.quantity && Objects.equals(actionCode, that.actionCode)
-                && Objects.equals(productName, that.productName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(actionCode, quantity, productName);
-    }
-
-    @Override
-    public String toString() {
-        return "FruitTransaction{"
-                + "actionCode='" + actionCode + '\''
-                + ", quantity=" + quantity
-                + ", productName='" + productName + '\''
-                + '}';
     }
 }

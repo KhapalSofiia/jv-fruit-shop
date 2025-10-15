@@ -9,10 +9,10 @@ public class BalanceActionTypeServiceImpl implements ActionTypeService {
         if (quantity < 0) {
             throw new InvalidDataException("Quantity can't be negative " + quantity);
         }
-        if (storage.contains(product)) {
-            storage.set(product, quantity);
+        if (storage.getStorage().containsKey(product)) {
+            storage.getStorage().put(product, quantity);
         } else {
-            storage.set(product, quantity);
+            storage.getStorage().put(product, quantity);
         }
     }
 }

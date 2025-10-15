@@ -9,11 +9,11 @@ public class ReturnActionTypeServiceImpl implements ActionTypeService {
         if (quantity < 0) {
             throw new InvalidDataException("Quantity can't be negative " + quantity);
         }
-        if (storage.contains(product)) {
-            int currentQuantity = storage.get(product);
-            storage.set(product, currentQuantity + quantity);
+        if (storage.getStorage().containsKey(product)) {
+            int currentQuantity = storage.getStorage().get(product);
+            storage.getStorage().put(product, currentQuantity + quantity);
         } else {
-            storage.set(product, quantity);
+            storage.getStorage().put(product, quantity);
         }
     }
 }
